@@ -7,6 +7,7 @@ struct MatchMateApp: App {
         WindowGroup {
             ContentView()
         }
+        // Provides the SwiftData context that ContentView passes into the view model.
         .modelContainer(for: StoredMatch.self)
     }
 }

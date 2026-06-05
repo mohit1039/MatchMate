@@ -98,6 +98,7 @@ final class StoredMatch {
     }
 
     func update(with profile: MatchProfile, syncedAt: Date = Date()) {
+        // Refresh only profile fields so local accept/decline decisions survive API updates.
         name = profile.name
         username = profile.username
         email = profile.email
@@ -117,6 +118,7 @@ final class StoredMatch {
     func applyLocalDecision(_ decision: MatchDecision) {
         self.decision = decision
         decisionUpdatedAt = Date()
+        // Local changes are treated as pending until MatchDecisionSyncService confirms them.
         isDecisionSynced = false
         syncErrorMessage = nil
         updatedAt = Date()

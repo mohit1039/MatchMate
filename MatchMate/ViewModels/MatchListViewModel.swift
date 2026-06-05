@@ -34,6 +34,7 @@ final class MatchListViewModel: ObservableObject {
             return
         }
 
+        // The ModelContext comes from SwiftUI's environment, so setup waits until the view is available.
         repository = repositoryFactory.makeRepository(modelContext: modelContext)
         loadStoredMatches()
         observeConnectivity()
@@ -45,6 +46,7 @@ final class MatchListViewModel: ObservableObject {
         }
 
         if !connectivityMonitor.isConnected {
+            // Avoid starting a network request when known offline; show the local cache instead.
             isLoading = false
             showCachedMatchesAfterFailure(error: .offline)
             return
@@ -215,6 +217,7 @@ final class MatchListViewModel: ObservableObject {
         isSyncing = true
         syncCancellables.removeAll()
 
+        // Convert each sync failure into a result so one failed decision does not cancel the whole batch.
         let syncPublishers = pendingMatches.compactMap { match -> AnyPublisher<DecisionSyncResult, Never>? in
             guard let decision = match.decision else {
                 return nil

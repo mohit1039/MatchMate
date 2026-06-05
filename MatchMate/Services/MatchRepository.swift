@@ -48,6 +48,7 @@ final class MatchRepository: MatchRepositoryProtocol {
     }
 
     func refreshMatches() -> AnyPublisher<[StoredMatch], MatchMateError> {
+        // Network results are immediately merged into SwiftData, making the cache the source for UI state.
         apiService.fetchMatches()
             .receive(on: DispatchQueue.main)
             .tryMap { [persistenceService] profiles in

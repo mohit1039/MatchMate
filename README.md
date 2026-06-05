@@ -2,6 +2,8 @@
 
 MatchMate is a native iOS SwiftUI app scaffold that simulates a matrimonial match list.
 
+For a fuller architecture and flow explanation, see [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md).
+
 Current implementation:
 
 - SwiftUI app project

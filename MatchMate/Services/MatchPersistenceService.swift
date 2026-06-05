@@ -38,11 +38,13 @@ final class MatchPersistenceService: MatchPersistenceServiceProtocol {
         var processedProfileIDs = Set<Int>()
         let syncedAt = Date()
 
+        // Build a lookup first so refreshes update existing SwiftData objects instead of duplicating them.
         for match in try fetchMatches() {
             existingMatchesByID[match.userID] = match
         }
 
         for profile in profiles {
+            // Protect the unique userID constraint if the API response ever repeats a profile.
             guard processedProfileIDs.insert(profile.id).inserted else {
                 continue
             }
